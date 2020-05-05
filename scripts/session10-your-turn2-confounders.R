@@ -26,4 +26,28 @@ b3 <- 2.7
 dat <- dat %>% 
   mutate(y = a + b1 * x1 + b2 * x2 + b3 * z + e)
 
-# this is my attempt
+# this is my attempt (Dan):
+a <- -0.4
+b1 <- 1.2
+b2 <- -0.8
+b3 <- 2.7
+
+set.seed(123456)
+dat <- tibble(
+  z = rnorm(n = 1000, mean = 0, sd = 1),
+  x1 = rnorm(n= 1000, mean = 0, sd = 1),
+  x2 = rnorm(n = 1000, mean = 0, sd = 1),
+  e = rnorm(n = 1000, mean = 0, sd = 1/5)
+) 
+
+dat <- dat %>% 
+  mutate(y = a + b1 * x1 + b2 * x2 + b3 * z + e)  
+
+fit6 <- lm(y ~ x1 + x2 + z, data = dat)
+fit6
+fit7 <- lm(y ~ x1 + x2, data = dat)
+fit7
+
+stargazer::stargazer(fit6, fit7, type = "text", style = "apsr")
+#no, lm(y ~ x1 + x2, data = dat) [fit7] can not estimate b1 correctly, while [fit6] can
+
